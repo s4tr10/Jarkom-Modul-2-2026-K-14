@@ -232,7 +232,7 @@ Pembuktian bahwa nilai serial SOA pada DNS Master (`prab`) dan DNS Slave (`tedd`
 ### Soal 7 - Satrio
 > abbey dan penny sebagai gerbang utama, obladi dan desmond sebagai web statis, oblada dan molly sebagai web dinamis. Tambahkan pada zona `<xxxx>.com` A record untuk `vault.<xxxx>.com` (IP obladi & desmond), dan `core.<xxxx>.com` (IP oblada & molly). Tetapkan CNAME: `www.<xxxx>.com` mengarah ke `penny.<xxxx>.com`, `static.<xxxx>.com` mengarah ke `abbey.<xxxx>.com`. Verifikasi dari dua klien berbeda bahwa seluruh hostname tersebut ter-resolve ke tujuan yang benar dan konsisten.
 
-Penyelesaian soal ini dilakukan dengan menambahkan *record* DNS baru pada *file* zona `db.k14` di DNS Master (node `prab`). Saya menggunakan metode DNS *Round-Robin* dengan mendeklarasikan nama domain yang sama (`vault` dan `core`) ke lebih dari satu *A record* (IP yang berbeda)[cite: 3]. Selain itu, ditambahkan pula *CNAME record* untuk alias `www` dan `static`[cite: 3]. Nilai serial SOA dinaikkan kembali (menjadi `2026100103`) agar node `tedd` mensinkronkan perubahan ini.
+Penyelesaian soal ini dilakukan dengan menambahkan *record* DNS baru pada *file* zona `db.k14` di DNS Master (node `prab`). Saya menggunakan metode DNS *Round-Robin* dengan mendeklarasikan nama domain yang sama (`vault` dan `core`) ke lebih dari satu *A record* (IP yang berbeda). Selain itu, ditambahkan pula *CNAME record* untuk alias `www` dan `static`. Nilai serial SOA dinaikkan kembali (menjadi `2026100103`) agar node `tedd` mensinkronkan perubahan ini.
 
 **1. Konfigurasi Penambahan Record di Node prab**
 Isi pembaruan `/etc/bind/db.k14` pada `/root/script.sh` node `prab` menjadi:
