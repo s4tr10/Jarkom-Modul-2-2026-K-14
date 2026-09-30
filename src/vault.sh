@@ -1,11 +1,11 @@
 #!/bin/bash
 # Contoh pada node obladi
 hostname obladi
-echo "192.168.1.4 obladi" >> /etc/hosts
+echo "192.218.1.4 obladi" >> /etc/hosts
 
 cat <<EOF> /etc/resolv.conf
-nameserver 192.168.1.2
-nameserver 192.168.1.3
+nameserver 192.218.1.2
+nameserver 192.218.1.3
 nameserver 192.168.122.1
 EOF
 

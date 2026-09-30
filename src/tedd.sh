@@ -1,10 +1,10 @@
 #!/bin/bash
 hostname tedd
-echo "192.168.1.3 tedd" >> /etc/hosts
+echo "192.218.1.3 tedd" >> /etc/hosts
 
 cat <<EOF> /etc/resolv.conf
-nameserver 192.168.1.2
-nameserver 192.168.1.3
+nameserver 192.218.1.2
+nameserver 192.218.1.3
 nameserver 192.168.122.1
 EOF
 
@@ -24,22 +24,22 @@ EOF
 cat <<EOF > /etc/bind/named.conf.local
 zone "k14.com" {
     type slave;
-    masters { 192.168.1.2; };
+    masters { 192.218.1.2; };
     file "/var/cache/bind/db.k14";
 };
-zone "1.168.192.in-addr.arpa" {
+zone "1.218.192.in-addr.arpa" {
     type slave;
-    masters { 192.168.1.2; };
+    masters { 192.218.1.2; };
     file "/var/cache/bind/db.1";
 };
-zone "4.168.192.in-addr.arpa" {
+zone "4.218.192.in-addr.arpa" {
     type slave;
-    masters { 192.168.1.2; };
+    masters { 192.218.1.2; };
     file "/var/cache/bind/db.4";
 };
-zone "5.168.192.in-addr.arpa" {
+zone "5.218.192.in-addr.arpa" {
     type slave;
-    masters { 192.168.1.2; };
+    masters { 192.218.1.2; };
     file "/var/cache/bind/db.5";
 };
 EOF

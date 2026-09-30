@@ -1,10 +1,10 @@
 #!/bin/bash
 hostname prab
-echo "192.168.1.2 prab" >> /etc/hosts
+echo "192.218.1.2 prab" >> /etc/hosts
 
 cat <<EOF> /etc/resolv.conf
-nameserver 192.168.1.2
-nameserver 192.168.1.3
+nameserver 192.218.1.2
+nameserver 192.218.1.3
 nameserver 192.168.122.1
 EOF
 
@@ -25,26 +25,26 @@ cat <<EOF > /etc/bind/named.conf.local
 zone "k14.com" {
     type master;
     file "/etc/bind/db.k14";
-    allow-transfer { 192.168.1.3; };
-    also-notify { 192.168.1.3; };
+    allow-transfer { 192.218.1.3; };
+    also-notify { 192.218.1.3; };
 };
-zone "1.168.192.in-addr.arpa" {
+zone "1.218.192.in-addr.arpa" {
     type master;
     file "/etc/bind/db.1";
-    allow-transfer { 192.168.1.3; };
-    also-notify { 192.168.1.3; };
+    allow-transfer { 192.218.1.3; };
+    also-notify { 192.218.1.3; };
 };
-zone "4.168.192.in-addr.arpa" {
+zone "4.218.192.in-addr.arpa" {
     type master;
     file "/etc/bind/db.4";
-    allow-transfer { 192.168.1.3; };
-    also-notify { 192.168.1.3; };
+    allow-transfer { 192.218.1.3; };
+    also-notify { 192.218.1.3; };
 };
-zone "5.168.192.in-addr.arpa" {
+zone "5.218.192.in-addr.arpa" {
     type master;
     file "/etc/bind/db.5";
-    allow-transfer { 192.168.1.3; };
-    also-notify { 192.168.1.3; };
+    allow-transfer { 192.218.1.3; };
+    also-notify { 192.218.1.3; };
 };
 EOF
 
@@ -59,27 +59,27 @@ cat <<EOF > /etc/bind/db.k14
 ;
 @       IN      NS      prab.k14.com.
 @       IN      NS      tedd.k14.com.
-@       IN      A       192.168.5.2
+@       IN      A       192.218.5.2
 
-prab    IN      A       192.168.1.2
-tedd    IN      A       192.168.1.3
-rootkit IN      A       192.168.1.1
-alpha   IN      A       192.168.6.2
-beta    IN      A       192.168.6.3
-gamma   IN      A       192.168.6.4
-delta   IN      A       192.168.7.2
-epsilon IN      A       192.168.7.3
-abbey   IN      A       192.168.4.2
-penny   IN      A       192.168.5.2
-obladi  IN      A       192.168.1.4
-desmond IN      A       192.168.1.5
-oblada  IN      A       192.168.1.6
-molly   IN      A       192.168.1.7
+prab    IN      A       192.218.1.2
+tedd    IN      A       192.218.1.3
+rootkit IN      A       192.218.1.1
+alpha   IN      A       192.218.6.2
+beta    IN      A       192.218.6.3
+gamma   IN      A       192.218.6.4
+delta   IN      A       192.218.7.2
+epsilon IN      A       192.218.7.3
+abbey   IN      A       192.218.4.2
+penny   IN      A       192.218.5.2
+obladi  IN      A       192.218.1.4
+desmond IN      A       192.218.1.5
+oblada  IN      A       192.218.1.6
+molly   IN      A       192.218.1.7
 
-vault   IN      A       192.168.1.4
-vault   IN      A       192.168.1.5
-core    IN      A       192.168.1.6
-core    IN      A       192.168.1.7
+vault   IN      A       192.218.1.4
+vault   IN      A       192.218.1.5
+core    IN      A       192.218.1.6
+core    IN      A       192.218.1.7
 
 www     IN      CNAME   penny
 static  IN      CNAME   abbey
