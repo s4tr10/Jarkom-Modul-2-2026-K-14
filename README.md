@@ -13,7 +13,7 @@ Membuat topologi dengan Rootkit sebagai root, menambahkan 5 switch (switch 2 & 3
 ![Topologi](Screenshot/1.1-topology.png) <br>
 
 Pembuktian jika Node sudah tersambung ke routernya, dengan melakukan ping alamat IP dari node tersebut.
-![ping node](Screenshot/1.2-ping-router.png)
+![ping node](Screenshot/1.2-ping-router-true.png)
 
 ### Soal 2 - Satrio
 > Meskipun The Mesh beroperasi dalam bayang-bayang, Rootkit menyadari bahwa Entitas di dalamnya masih membutuhkan asupan paket dari dunia luar. Buka jalur menuju NAT dengan memastikan antarmuka WAN di router rootkit aktif. Konfigurasikan NAT agar dapat meneruskan lalu lintas keluar bagi seluruh alamat internal, sehingga semua host di dalam jaringan dapat menjangkau internet publik menggunakan IP address
@@ -42,9 +42,9 @@ Pembuktian bahwa *resolver* telah terpasang dan berfungsi untuk menjangkau domai
 
 Pembuktian bahwa komunikasi lintas jalur/subnet berjalan normal (internal routing):
 - Ping node dalam subnet yang sama (node beta)
-![Ping node sebelah](Screenshot/3.2-ping-node-sebelah.png)
+![Ping node sebelah](Screenshot/3.2-ping-node-sebelah-true.png)
 - Ping node dalam subnet yang berbeda (node delta)
-![ping subnet lain](Screenshot/3.3-ping-subnet-lain.png)
+![ping subnet lain](Screenshot/3.3-ping-subnet-lain-true.png)
 
 ### SOal 4 - Satrio
 > Penjaga Direktori mulai menuliskan hukum The Mesh. Pada node prab, bangun zona `xxxx>.com` sebagai authoritative dengan SOA yang menunjuk ke `prab.<xxxx>.com`, serta tambahkan catatan NS untuk `prab.<xxxx>.com` dan `tedd.<xxxx>.com`. Buat A record untuk `prab.<xxxx>.com` dan `tedd.<xxxx>.com` yang mengarah ke alamat IP mereka masing-masing, serta A record apex `<xxxx>.com` yang mengarah ke gerbang aplikasi dinamis (penny). Aktifkan fitur notify dan allow-transfer ke tedd, lalu set forwarders ke `192.168.122.1`. Di node tedd, tarik zona `<xxxx>.com` dari master dan pastikan server menjawab secara authoritative. Setelah fondasi nama ini berdiri kokoh, perbarui urutan resolver pada seluruh Entitas non-router menjadi: IP prab, IP tedd, lalu `192.168.122.1`. Verifikasi bahwa query ke domain apex maupun hostname di dalam zona dijawab dengan benar oleh prab atau tedd. 
@@ -153,13 +153,13 @@ EOF
 ```
 
 Pembuktian bahwa urutan resolver sudah diperbarui sesuai instruksi:
-![perubahan resolver pada tiap node](Screenshot/4.3-perubahan-resolver.png)
+![perubahan resolver pada tiap node](Screenshot/4.3-perubahan-resolver-true.png)
 
 Pembuktian bahwa query ke domain apex (`k14.com`) diarahkan ke IP `penny` (`192.218.5.2`) dan dijawab secara authoritative oleh DNS server internal:
-![ping ke domain k14.com](Screenshot/4.4-ping-k14-com.png)
+![ping ke domain k14.com](Screenshot/4.4-ping-k14-com-true.png)
 
 Pembuktian bahwa query ke hostname di dalam zona (misalnya `prab.k14.com` dan `tedd.k14.com`) dijawab dengan benar dengan IP yang sesuai:
-![ping](Screenshot/4.5-ping-hostname.png)
+![ping](Screenshot/4.5-ping-hostname-true.png)
 
 ### Soal 5 - Satrio
 >"Entitas tanpa identitas adalah anomali," pesan Rootkit. Namai semua Entitas (hostname) sesuai glosarium: rootkit, alpha, beta, gamma, delta, epsilon, prab, tedd, abbey, penny, obladi, desmond, oblada, molly, dan verifikasi bahwa setiap host mengenali hostname tersebut secara system-wide. Buat setiap domain untuk masing-masing node sesuai dengan namanya (contoh: `alpha.<xxxx>.com`) dan assign IP masing-masing juga. Lakukan pengecualian untuk node yang bertanggung jawab atas prab dan tedd.
@@ -174,7 +174,7 @@ Contoh isi `/root/script.sh` pada node `alpha`:
 hostname alpha
 echo "192.218.6.2 alpha" >> /etc/hosts
 ```
-![](Screenshot/5.1-menambah-hostname.png)
+![](Screenshot/5.1-menambah-hostname-true.png)
 
 **2. Pendaftaran Domain di DNS Master (Node prab)**
 Saya memperbarui file zona `db.k14` di node `prab` dengan menambahkan A record untuk semua node yang ada pada jaringan The Mesh. Node `prab` dan `tedd` dikecualikan dari pembuatan record baru karena sudah dideklarasikan pada pengerjaan nomor sebelumnya. Serial SOA dinaikkan menjadi `2026100102` agar node DNS Slave (`tedd`) melakukan sinkronisasi otomatis
@@ -217,7 +217,7 @@ pkill named && named
 ```
 
 Pembuktian bahwa hostname telah dikenali secara system-wide di lokal node dan domain masing-masing node berhasil di-resolve oleh DNS:
-![hostname dikenali](Screenshot/5.2-cek-hostname-dan-ping-hostname-lain.png)
+![hostname dikenali](Screenshot/5.2-cek-hostname-dan-ping-hostname-lain-true.png)
 
 ### Soal 6 - Satrio 
 > Pastikan zone transfer berjalan, pastikan tedd telah menerima salinan zona terbaru dari prab. Nilai serial SOA di keduanya harus sama karena keduanya tidak bisa dipisahkan dan saling melengkapi.
@@ -227,7 +227,7 @@ Penyelesaian soal ini berfokus pada verifikasi proses *zone transfer* (sinkronis
 **Pembuktian:**
 
 Pembuktian bahwa nilai serial SOA pada DNS Master (`prab`) dan DNS Slave (`tedd`) memiliki nilai yang sama persis (dalam hal ini `2026100102`), yang menandakan bahwa `tedd` berhasil menarik salinan zona terbaru dari `prab`:
-![Verifikasi Zone Transfer Master dan Slave](Screenshot/6.1-cek-serial-soa.png)
+![Verifikasi Zone Transfer Master dan Slave](Screenshot/6.1-cek-serial-soa-true.png)
 
 ### Soal 7 - Satrio
 > abbey dan penny sebagai gerbang utama, obladi dan desmond sebagai web statis, oblada dan molly sebagai web dinamis. Tambahkan pada zona `<xxxx>.com` A record untuk `vault.<xxxx>.com` (IP obladi & desmond), dan `core.<xxxx>.com` (IP oblada & molly). Tetapkan CNAME: `www.<xxxx>.com` mengarah ke `penny.<xxxx>.com`, `static.<xxxx>.com` mengarah ke `abbey.<xxxx>.com`. Verifikasi dari dua klien berbeda bahwa seluruh hostname tersebut ter-resolve ke tujuan yang benar dan konsisten.
@@ -288,13 +288,13 @@ Pengujian dilakukan menggunakan perintah `dig` dari dua node klien yang berbeda 
 
 Pembuktian dari klien pertama (`alpha`):
 (Jalankan perintah `dig vault.k14.com`, `dig core.k14.com`, dan `ping -c 2 www.k14.com` dari node `alpha`)
-![dig vault dari node alpha](Screenshot/7.1-dig-vault-alpha.png) <br>
-![dig core dari node alpha](Screenshot/7.2-dig-core-alpha.png) <br>
-![ping www.k14.com](Screenshot/7.3-ping-www-k14.png) <br>
+![dig vault dari node alpha](Screenshot/7.1-dig-vault-alpha-true.png) <br>
+![dig core dari node alpha](Screenshot/7.2-dig-core-alpha-true.png) <br>
+![ping www.k14.com](Screenshot/7.3-ping-www-k14-true.png) <br>
 
 Pembuktian dari klien kedua (`beta`):
 (Jalankan perintah `dig vault.k14.com`, `dig core.k14.com`, dan `ping -c 2 static.k14.com` dari node `beta`)
-![dig vault dan core dari node beta](/Screenshot/7.4-dig-vaultncore-beta.png)
+![dig vault dan core dari node beta](/Screenshot/7.4-dig-vaultncore-beta-true.png)
 ![ping www.k14.com dari node beta](/Screenshot/7.5-ping-www-k14-beta.png)
 
 ### Soal 8 - Satrio
@@ -413,7 +413,7 @@ pkill named && named
 **3. Verifikasi DNS Reverse (PTR)**
 
 Pembuktian dilakukan melalui klien dengan menggunakan perintah `dig -x` atau `host` pada alamat IP yang telah didaftarkan untuk membuktikan reverse zone merespons secara authoritative:
-![pembuktian reverse zone](/Screenshot/8.1-reverse-zone.png)
+![pembuktian reverse zone](/Screenshot/8.1-reverse-zone-true.png)
 
 ### Soal 9 - Satrio
 > Jalankan layanan web statis pada hostname di node area vault (menggunakan apache). Buka folder direktori /arsip/ dan aktifkan fitur autoindex (directory listing) pada konfigurasi Nginx sehingga seluruh daftar file di dalamnya dapat ditelusuri langsung dari browser. Akses pengujian harus dilakukan melalui hostname, bukan IP address.
